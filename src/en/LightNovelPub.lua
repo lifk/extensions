@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.0.2","libVer":"0.0.2","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.3","libVer":"0.0.3","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
@@ -72,13 +72,11 @@ return {
 	-- Must have at least one value
 	listings = {
 		Listing("Default", true, function(data)
-			for key, value in pairs(data) do
-				print(key, value)
-			end
 			local d = GETDocument(baseURL ..
 					"stories-17091737/genre-all/order-popular/status-all/p-" ..
 					1)
-			local itemList = d:selectFirst("ul.novel-list")
+			local cont = d:selectFirst("div.container")
+			local itemList = cont:selectFirst("ul.novel-list")
 			local items = itemList:select("li.novel-item")
 
 			return map(items, function(e)
