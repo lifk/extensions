@@ -509,6 +509,16 @@
       "ver": "1.0.0",
       "libVer": "1.0.0",
       "md5": ""
+    },
+    {
+      "name": "Light Novel Pub",
+      "fileName": "LightNovelPub",
+      "imageURL": "https://static.lightnovelpub.com/content/img/lightnovelpub/logo.png",
+      "id": 1787,
+      "lang": "en",
+      "ver": "0.0.1",
+      "libVer": "0.0.1",
+      "md5": ""
     }
   ]
 }
