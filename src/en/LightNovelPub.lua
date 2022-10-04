@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.0.1","libVer":"0.0.1","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.2","libVer":"0.0.2","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
@@ -78,7 +78,7 @@ return {
 			local d = GETDocument(baseURL ..
 					"stories-17091737/genre-all/order-popular/status-all/p-" ..
 					1)
-			local itemList = doc:selectFirst("ul.novel-list")
+			local itemList = d:selectFirst("ul.novel-list")
 			local items = itemList:select("li.novel-item")
 
 			return map(items, function(e)
