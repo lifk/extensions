@@ -1,6 +1,6 @@
--- {"id":1787,"ver":"0.0.3","libVer":"0.0.3","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.4","libVer":"0.0.4","author":"Xanvial"}
 
-local baseURL = "https://www.webnovelpub.com/"
+local baseURL = "https://www.lightnovelpub.com/"
 local settings = {}
 
 --- @param chapterURL string
