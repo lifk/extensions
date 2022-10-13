@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.1.0","libVer":"0.1.0","author":"Xanvial"}
+-- {"id":1787,"ver":"0.1.1","libVer":"0.1.1","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
@@ -94,7 +94,7 @@ return {
 		TextFilter(17871, "RANDOM STRING INPUT"),
 	},
 	settings = {
-		TextFilter(1, "RANDOM STRING INPUT"),
+		TextFilter(1, "RANDOM STRING SETTING"),
 	},
 
 	-- Default functions that have to be set
@@ -104,4 +104,7 @@ return {
 	updateSetting = function(id, value)
 		settings[id] = value
 	end
+	setSettings = function(s) 
+		settings = s 
+	end,
 }
