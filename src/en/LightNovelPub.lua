@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.0.8","libVer":"0.0.8","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.9","libVer":"0.0.9","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
@@ -68,7 +68,6 @@ return {
 	hasCloudFlare = true,
 	hasSearch = true,
 
-
 	-- Must have at least one value
 	listings = {
 		Listing("Default", true, function(data)
@@ -90,28 +89,29 @@ return {
 		end),
 	},
 
-	---- Optional if usable
-	--searchFilters = {
-	--	TextFilter(1, "RANDOM STRING INPUT"),
-	--	SwitchFilter(2, "RANDOM SWITCH INPUT"),
-	--	CheckboxFilter(3, "RANDOM CHECKBOX INPUT"),
-	--	TriStateFilter(4, "RANDOM TRISTATE CHECKBOX INPUT"),
-	--	RadioGroupFilter(5, "RANDOM RGROUP INPUT", { "A","B","C" }),
-	--	DropdownFilter(6, "RANDOM DDOWN INPUT", { "A","B","C" })
-	--},
-	--settings = {
-	--	TextFilter(1, "RANDOM STRING INPUT"),
-	--	SwitchFilter(2, "RANDOM SWITCH INPUT"),
-	--	CheckboxFilter(3, "RANDOM CHECKBOX INPUT"),
-	--	TriStateFilter(4, "RANDOM TRISTATE CHECKBOX INPUT"),
-	--	RadioGroupFilter(5, "RANDOM RGROUP INPUT", { "A","B","C" }),
-	--	DropdownFilter(6, "RANDOM DDOWN INPUT", { "A","B","C" })
-	--},
+	-- Optional if usable
+	searchFilters = {
+		TextFilter(1, "RANDOM STRING INPUT"),
+		SwitchFilter(2, "RANDOM SWITCH INPUT"),
+		CheckboxFilter(3, "RANDOM CHECKBOX INPUT"),
+		TriStateFilter(4, "RANDOM TRISTATE CHECKBOX INPUT"),
+		RadioGroupFilter(5, "RANDOM RGROUP INPUT", { "A","B","C" }),
+		DropdownFilter(6, "RANDOM DDOWN INPUT", { "A","B","C" })
+	},
+	settings = {
+		TextFilter(1, "RANDOM STRING INPUT"),
+		SwitchFilter(2, "RANDOM SWITCH INPUT"),
+		CheckboxFilter(3, "RANDOM CHECKBOX INPUT"),
+		TriStateFilter(4, "RANDOM TRISTATE CHECKBOX INPUT"),
+		RadioGroupFilter(5, "RANDOM RGROUP INPUT", { "A","B","C" }),
+		DropdownFilter(6, "RANDOM DDOWN INPUT", { "A","B","C" })
+	},
 
 	-- Default functions that have to be set
 	getPassage = getPassage,
 	parseNovel = parseNovel,
 	search = search,
-	setSettings = function() end,
-	updateSetting = function() end,
+	updateSetting = function(id, value)
+		settings[id] = value
+	end
 }
