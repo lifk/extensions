@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.0.9","libVer":"0.0.9","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.10","libVer":"0.0.10","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
@@ -91,20 +91,10 @@ return {
 
 	-- Optional if usable
 	searchFilters = {
-		TextFilter(1, "RANDOM STRING INPUT"),
-		SwitchFilter(2, "RANDOM SWITCH INPUT"),
-		CheckboxFilter(3, "RANDOM CHECKBOX INPUT"),
-		TriStateFilter(4, "RANDOM TRISTATE CHECKBOX INPUT"),
-		RadioGroupFilter(5, "RANDOM RGROUP INPUT", { "A","B","C" }),
-		DropdownFilter(6, "RANDOM DDOWN INPUT", { "A","B","C" })
+		TextFilter(17871, "RANDOM STRING INPUT"),
 	},
 	settings = {
 		TextFilter(1, "RANDOM STRING INPUT"),
-		SwitchFilter(2, "RANDOM SWITCH INPUT"),
-		CheckboxFilter(3, "RANDOM CHECKBOX INPUT"),
-		TriStateFilter(4, "RANDOM TRISTATE CHECKBOX INPUT"),
-		RadioGroupFilter(5, "RANDOM RGROUP INPUT", { "A","B","C" }),
-		DropdownFilter(6, "RANDOM DDOWN INPUT", { "A","B","C" })
 	},
 
 	-- Default functions that have to be set
