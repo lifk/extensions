@@ -1,6 +1,6 @@
--- {"id":1787,"ver":"0.0.4","libVer":"0.0.4","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.6","libVer":"0.0.6","author":"Xanvial"}
 
-local baseURL = "https://www.lightnovelpub.com/"
+local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
 
 --- @param chapterURL string
@@ -113,6 +113,6 @@ return {
 	parseNovel = parseNovel,
 	search = search,
 	updateSetting = function(id, value)
-		settings[id] = value
+		-- settings[id] = value
 	end
 }
