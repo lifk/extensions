@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.0.10","libVer":"0.0.10","author":"Xanvial"}
+-- {"id":1787,"ver":"0.1.0","libVer":"0.1.0","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
