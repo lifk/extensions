@@ -103,7 +103,7 @@ return {
 	search = search,
 	updateSetting = function(id, value)
 		settings[id] = value
-	end
+	end,
 	setSettings = function(s) 
 		settings = s 
 	end,
