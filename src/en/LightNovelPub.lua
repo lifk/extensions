@@ -1,4 +1,4 @@
--- {"id":1787,"ver":"0.0.7","libVer":"0.0.7","author":"Xanvial"}
+-- {"id":1787,"ver":"0.0.8","libVer":"0.0.8","author":"Xanvial"}
 
 local baseURL = "https://www.webnovelpub.com/"
 local settings = {}
@@ -112,7 +112,6 @@ return {
 	getPassage = getPassage,
 	parseNovel = parseNovel,
 	search = search,
-	updateSetting = function(id, value)
-		-- settings[id] = value
-	end
+	setSettings = function() end,
+	updateSetting = function() end,
 }
