@@ -1,6 +1,6 @@
 -- {"id":1787,"ver":"0.1.2","libVer":"0.1.2","author":"Xanvial"}
 
-local baseURL = "https://www.webnovelpub.com/"
+local baseURL = "https://www.webnovelpub.com"
 local settings = {}
 
 --- @param chapterURL string
@@ -74,7 +74,7 @@ return {
 	listings = {
 		Listing("Default", true, function(data)
 			local d = GETDocument(baseURL ..
-					"stories-17091737/genre-all/order-popular/status-all/p-" ..
+					"/stories-17091737/genre-all/order-popular/status-all/p-" ..
 					1)
 			local cont = d:selectFirst("div.container")
 			local itemList = cont:selectFirst("ul.novel-list")
