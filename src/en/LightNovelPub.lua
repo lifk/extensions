@@ -16,15 +16,15 @@ end
 
 --- @param novelURL string
 --- @return NovelInfo
-local function parseNovel(novelURL)
+local function parseNovel(novel)
 	local novelInfo = NovelInfo()
-	local novelURL = baseURL .. novelURL
-	local document = GETDocument(novelURL)
+	local novelDataURL = baseURL .. novelURL
+	local document = GETDocument(novelDataURL)
 
 	-- novelInfo:setImageURL(document:selectFirst("div.fixed-img"):select("figure"):select("img"):attr("data-src"))
 
 	-- local info = document:selectFirst("div.novel-info")
-	novelInfo:setTitle(novelURL)
+	novelInfo:setTitle(novelDataURL)
 	-- novelInfo:setAuthors(info)
 	-- novelInfo:setTitle(info:selectFirst("h1"):text())
 	-- novelInfo:setAuthors({ info:selectFirst("div.author"):selectFirst("span"):text() })
