@@ -21,11 +21,11 @@ local function parseNovel(novelURL)
 	local novelURL = baseURL .. novelURL
 	local document = GETDocument(novelURL)
 
-	novelInfo:setImageURL(document:selectFirst("div.fixed-img"):select("figure"):select("img"):attr("data-src"))
+	-- novelInfo:setImageURL(document:selectFirst("div.fixed-img"):select("figure"):select("img"):attr("data-src"))
 
-	local info = document:selectFirst("div.novel-info")
+	-- local info = document:selectFirst("div.novel-info")
 	novelInfo:setTitle(novelURL)
-	novelInfo:setAuthors(info)
+	-- novelInfo:setAuthors(info)
 	-- novelInfo:setTitle(info:selectFirst("h1"):text())
 	-- novelInfo:setAuthors({ info:selectFirst("div.author"):selectFirst("span"):text() })
 	--novelInfo:setAlternativeTitles({ info:get(0):text() })
