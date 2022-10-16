@@ -18,7 +18,7 @@ end
 --- @return NovelInfo
 local function parseNovel(novelURL)
 	local novelInfo = NovelInfo()
-	local novelURL = baseURL .. "novel/" .. novelURL
+	local novelURL = baseURL .. novelURL
 	local document = GETDocument(novelURL)
 
 	novelInfo:setImageURL(document:selectFirst("div.fixed-img"):select("figure"):select("img"):attr("data-src"))
@@ -32,7 +32,7 @@ local function parseNovel(novelURL)
 	novelContainer = document:selectFirst("div.novel-body")
 	novelInfo:setDescription(novelContainer:selectFirst(p.description):text())
 
-	local chapterPage = GETDocument(novelURL .. "/chapters")
+	local chapterPage = GETDocument(novelURL .. "/chapters?chorder=desc")
 	local chaptersDocs = chapterPage:selectFirst("ul.chapter-list"):select("li")
 
 	local chapterCount = 0
@@ -64,9 +64,9 @@ return {
 	baseURL = baseURL,
 
 	-- Optional values to change
-	imageURL = "https://static.lightnovelpub.com/content/img/lightnovelpub/logo.png",
+	imageURL = "https://picsum.photos/200",
 	hasCloudFlare = true,
-	hasSearch = true,
+	hasSearch = false,
 
 	-- Must have at least one value
 	listings = {
@@ -102,9 +102,9 @@ return {
 	parseNovel = parseNovel,
 	search = search,
 	updateSetting = function(id, value)
-		settings[id] = value
+		-- settings[id] = value
 	end,
 	setSettings = function(s) 
-		settings = s 
+		-- settings = s 
 	end,
 }
