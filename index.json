@@ -33,7 +33,7 @@
     {
       "name": "Light Novel Pub",
       "fileName": "LightNovelPub",
-      "imageURL": "https://static.lightnovelpub.com/content/img/lightnovelpub/logo.png",
+      "imageURL": "http://github.com/shosetsuorg/extensions/raw/dev/icons/EternalTranslation.png",
       "id": 1787,
       "lang": "en",
       "ver": "0.1.4",
