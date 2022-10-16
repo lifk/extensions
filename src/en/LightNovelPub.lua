@@ -83,8 +83,8 @@ return {
 			return map(items, function(e)
 				local novel = Novel()
 				local title = e:selectFirst("h4"):selectFirst("a")
-				novel:setTitle(title:attr("title"))
-				novel:setLink(title:attr("href"))
+				-- novel:setTitle(title:attr("title"))
+				novel:setTitle(title:attr("href"))
 				novel:setImageURL(e:selectFirst("img"):attr("data-src"))
 				return novel
 			end)
