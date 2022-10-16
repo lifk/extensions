@@ -24,30 +24,32 @@ local function parseNovel(novelURL)
 	novelInfo:setImageURL(document:selectFirst("div.fixed-img"):select("figure"):select("img"):attr("data-src"))
 
 	local info = document:selectFirst("div.novel-info")
-	novelInfo:setTitle(info:selectFirst("h1"):text())
-	novelInfo:setAuthors({ info:selectFirst("div.author"):selectFirst("span"):text() })
+	novelInfo:setTitle(novelURL)
+	novelInfo:setAuthors(info)
+	-- novelInfo:setTitle(info:selectFirst("h1"):text())
+	-- novelInfo:setAuthors({ info:selectFirst("div.author"):selectFirst("span"):text() })
 	--novelInfo:setAlternativeTitles({ info:get(0):text() })
 	--novelInfo:setGenres({ info:get(1):text() })
 
-	novelContainer = document:selectFirst("div.novel-body")
-	novelInfo:setDescription(novelContainer:selectFirst(p.description):text())
+	-- novelContainer = document:selectFirst("div.novel-body")
+	-- novelInfo:setDescription(novelContainer:selectFirst(p.description):text())
 
-	local chapterPage = GETDocument(novelURL .. "/chapters?chorder=desc")
-	local chaptersDocs = chapterPage:selectFirst("ul.chapter-list"):select("li")
+	-- local chapterPage = GETDocument(novelURL .. "/chapters?chorder=desc")
+	-- local chaptersDocs = chapterPage:selectFirst("ul.chapter-list"):select("li")
 
-	local chapterCount = 0
+	-- local chapterCount = 0
 
-	local chapters = map2flat(chaptersDocs, function(e)
-		return e:select("a")
-	end, function(e)
-		local chapter = NovelChapter()
-		chapter:setTitle(e:attr("title"))
-		chapter:setLink(e:attr("href"))
-		chapter:setOrder(chapterCount)
-		chapterCount = chapterCount + 1
-		return chapter
-	end)
-	novelInfo:setChapters(AsList(chapters))
+	-- local chapters = map2flat(chaptersDocs, function(e)
+	-- 	return e:select("a")
+	-- end, function(e)
+	-- 	local chapter = NovelChapter()
+	-- 	chapter:setTitle(e:attr("title"))
+	-- 	chapter:setLink(e:attr("href"))
+	-- 	chapter:setOrder(chapterCount)
+	-- 	chapterCount = chapterCount + 1
+	-- 	return chapter
+	-- end)
+	-- novelInfo:setChapters(AsList(chapters))
 	return novelInfo
 end
 
