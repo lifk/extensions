@@ -21,26 +21,21 @@ local defaults = {
 
 function defaults:search(data)
 	-- search gives covers but they're in some weird aspect ratio
-	local doc = GETDocument(qs({ keyword = data[QUERY], page = data[PAGE] }, self.baseURL .. "/search"))
+	local doc = GETDocument(qs({ q = data[QUERY], page = data[PAGE] }, self.baseURL .. "/search"))
 
-	return map(doc:selectFirst("div." .. self.searchListSel):select("div.row"), function(v)
+	return map(doc:selectFirst(".list-cat2"):select("div.item a"), function(v)
 			local novel = Novel()
-			novel:setImageURL(v:selectFirst("img.cover"):attr("src"))
-			local d = v:selectFirst(self.searchTitleSel .. " a")
-			novel:setLink(d:attr("href"))
-			novel:setTitle(d:attr("title"))
+			novel:setImageURL(v:selectFirst("img"):attr("src"))
+			novel:setTitle(v:attr("title"))
+			novel:setLink(v:attr("href"))
 			return novel
 		end)
 end
 
 function defaults:getPassage(url)
-	local targetUrl = self.baseURL..url
-	if self.baseUrlInLinks then
-		targetUrl = url
-	end
-	local htmlElement = GETDocument(targetUrl):selectFirst("div#chapter")
-	local title = htmlElement:selectFirst("a.chapter-title"):text()
-	htmlElement = htmlElement:selectFirst("div#chapter-content")
+	local htmlElement = GETDocument(url)
+	local title = htmlElement:selectFirst("a.truyen-title"):text()
+	htmlElement = htmlElement:selectFirst("div.chapter-content")
 
 	-- Remove/modify unwanted HTML elements to get a clean webpage.
 	htmlElement:removeAttr("style") -- Hopefully only temporary as a hotfix
@@ -56,11 +51,7 @@ function defaults:getPassage(url)
 end
 
 function defaults:parseNovel(url, loadChapters)
-	local targetUrl = self.baseURL..url
-	if self.baseUrlInLinks then
-		targetUrl = url
-	end
-	local doc = GETDocument(targetUrl)
+	local doc = GETDocument(url)
 	local info = NovelInfo()
 
 	local elem = doc:selectFirst(".info"):children()
@@ -73,25 +64,26 @@ function defaults:parseNovel(url, loadChapters)
 	end
 
 	info:setAuthors(meta_links(0))
-	info:setAlternativeTitles(meta_links(1))
-	info:setGenres(meta_links(2))
-	info:setStatus( ({
-		Ongoing = NovelStatus.PUBLISHING,
-		Completed = NovelStatus.COMPLETED
-	})[elem:get(meta_offset + 4):select("a"):text()] )
+	--info:setAlternativeTitles(meta_links(1))
+	info:setGenres(meta_links(1))
+	--info:setStatus( ({
+	--	Ongoing = NovelStatus.PUBLISHING,
+	--	Completed = NovelStatus.COMPLETED
+	--})[elem:get(meta_offset + 3):select("a"):text()] )
 
 	info:setImageURL((self.appendURLToInfoImage and self.baseURL or "") .. doc:selectFirst("div.book img"):attr("src"))
 	info:setDescription(table.concat(map(doc:select("div.desc-text p"), text), "\n"))
 
 	if loadChapters then
-		local id = doc:selectFirst("div[data-novel-id]"):attr("data-novel-id")
+		--local id = doc:selectFirst("div[data-novel-id]"):attr("data-novel-id")
 		local i = 0
+		-- doc:selectFirst(".list-chapter"):children(),
 		info:setChapters(AsList(map(
-				GETDocument(qs({ novelId = id,currentChapterId = "" }, self.ajax_base .. self.ajax_chapters)):selectFirst("select"):children(),
+				doc:selectFirst(".list-chapter"):select("li a"),
 				function(v)
 					local chap = NovelChapter()
-					chap:setLink(self.shrinkURL(v:attr("value")))
-					chap:setTitle(v:text())
+					chap:setLink(v:attr("href"))
+					chap:setTitle(v:attr("title"))
 					chap:setOrder(i)
 					i = i + 1
 					return chap
@@ -122,16 +114,16 @@ local function novelData(baseURL, _self)
 	end
 	_self["listings"] = {
 		Listing("Hot", false, function()
-			return map(GETDocument(_self.ajax_base .. _self.ajax_hot):select("div.item a"), function(v)
+			return map(GETDocument(_self.ajax_base .. _self.ajax_hot):selectFirst(".list-cat2"):select("div.item a"), function(v)
 				local novel = Novel()
-				novel:setImageURL(baseURL .. v:selectFirst("img"):attr("src"))
+				novel:setImageURL(v:selectFirst("img"):attr("src"))
 				novel:setTitle(v:attr("title"))
 				novel:setLink(v:attr("href"))
 				return novel
 			end)
 		end),
 		Listing("Latest", false, function()
-			return map(GETDocument(_self.ajax_base .. _self.ajax_latest):select("div.row .col-title a"), function(v)
+			return map(GETDocument(_self.ajax_base .. _self.ajax_latest):select("div.item a"), function(v)
 				local novel = Novel()
 				novel:setTitle(v:text())
 				novel:setLink(v:attr("href"))
@@ -142,7 +134,7 @@ local function novelData(baseURL, _self)
 	return _self
 end
 
-return novelData("https://novel35.com", {
+return novelData("https://novelnb.com", {
 	id = 1788,
 	name = "Novel35",
 	imageURL = "https://github.com/shosetsuorg/extensions/raw/dev/icons/NovelFull.png",
@@ -150,7 +142,7 @@ return novelData("https://novel35.com", {
 	baseUrlInLinks = true,
 	hasCloudFlare = true,
 	meta_offset = 0,
-	ajax_hot = "/search?type=hot",
+	ajax_hot = "/list/hot-novel",
 	ajax_latest = "/search?type=latest",
 	ajax_chapters = "/chapter-option",
 	searchListSel = "list.list-truyen.col-xs-12",
