@@ -111,7 +111,7 @@ function defaults:expandURL(url)
 	return self.baseURL .. url
 end
 
-function novelData(baseURL, _self)
+local function novelData(baseURL, _self)
 	_self = setmetatable(_self or {}, { __index = function(_, k)
 		local d = defaults[k]
 		return (type(d) == "function" and wrap(_self, d) or d)
