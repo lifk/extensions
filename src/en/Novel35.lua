@@ -1,4 +1,4 @@
--- {"id":1788,"ver":"1.0.0","libVer":"1.0.0","author":"TechnoJo4","dep":["NovelFull>=2.0.2"]}
+-- {"id":1788,"ver":"1.0.4","libVer":"1.0.0","author":"TechnoJo4","dep":["Novel35>=2.0.7"]}
 
 return Require("Novel35")("https://novel35.com", {
 	id = 1788,
