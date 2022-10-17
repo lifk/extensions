@@ -1,10 +1,11 @@
 -- {"id":1788,"ver":"1.0.0","libVer":"1.0.0","author":"TechnoJo4","dep":["NovelFull>=2.0.2"]}
 
-return Require("NovelFull")("https://novel35.com", {
+return Require("Novel35")("https://novel35.com", {
 	id = 1788,
 	name = "Novel35",
 	imageURL = "https://github.com/shosetsuorg/extensions/raw/dev/icons/NovelFull.png",
 	
+	baseUrlInLinks = true,
 	hasCloudFlare = true,
 	meta_offset = 0,
 	ajax_hot = "/search?type=hot",
