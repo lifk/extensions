@@ -35,9 +35,9 @@ end
 
 function defaults:getPassage(url)
 	local targetUrl = self.baseURL..url
-	if self.baseUrlInLinks {
+	if self.baseUrlInLinks then
 		targetUrl = url
-	}
+	end
 	local htmlElement = GETDocument(targetUrl):selectFirst("div#chapter")
 	local title = htmlElement:selectFirst("a.chapter-title"):text()
 	htmlElement = htmlElement:selectFirst("div#chapter-content")
@@ -57,9 +57,9 @@ end
 
 function defaults:parseNovel(url, loadChapters)
 	local targetUrl = self.baseURL..url
-	if self.baseUrlInLinks {
+	if self.baseUrlInLinks then
 		targetUrl = url
-	}
+	end
 	local doc = GETDocument(targetUrl)
 	local info = NovelInfo()
 
