@@ -31,12 +31,12 @@
   ],
   "scripts": [
     {
-      "name": "Novel35",
-      "fileName": "Novel35",
-      "imageURL": "https://github.com/shosetsuorg/extensions/raw/dev/icons/NovelFull.png",
-      "id": 1788,
+      "name": "NovelNB",
+      "fileName": "NovelNB",
+      "imageURL": "",
+      "id": 1789,
       "lang": "en",
-      "ver": "1.0.7",
+      "ver": "1.0.1",
       "libVer": "1.0.0",
       "md5": ""
     },
