@@ -30,17 +30,17 @@ end
 
 function defaults:getPassage(url)
 	local doc = GETDocument(self.expandURL(url))
-	--local title = doc:selectFirst(".chapter-title"):text()
+	local title = doc:selectFirst(".chapter-title"):text()
 	local htmlElement = doc:selectFirst(".chapter-content")
 
 	---- Remove/modify unwanted HTML elements to get a clean webpage.
-	--htmlElement:removeAttr("style") -- Hopefully only temporary as a hotfix
-	--htmlElement:select("script"):remove()
-	--htmlElement:select("ins"):remove()
-	--htmlElement:select("div"):remove()
-	--
-	---- Chapter title inserted before chapter text.
-	--htmlElement:child(0):before("<h1>" .. title .. "</h1>");
+	htmlElement:removeAttr("style") -- Hopefully only temporary as a hotfix
+	htmlElement:select("script"):remove()
+	htmlElement:select("ins"):remove()
+	htmlElement:select("div"):remove()
+
+	-- Chapter title inserted before chapter text.
+	htmlElement:child(0):before("<h1>" .. title .. "</h1>");
 
 	return pageOfElem(htmlElement)
 end
