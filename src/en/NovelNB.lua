@@ -7,13 +7,10 @@ end
 
 local defaults = {
 	meta_offset = 1,
-	hot = "/ajax/hot-novels",
-	latest = "/ajax/latest-novels",
-	ajax_chapters = "/ajax/chapter-option",
-	appendURLToInfoImage = true,
-	searchTitleSel = ".novel-title",
+	hot = "/list/hot-novel",
+	latest = "/list/latest-release-novel",
+	completed = "/list/completed-novel",
 
-	baseUrlInLinks = false,
 	hasCloudFlare = false,
 	hasSearch = true,
 	chapterType = ChapterType.HTML
@@ -21,7 +18,7 @@ local defaults = {
 
 function defaults:getPassage(url)
 	local htmlElement = GETDocument(self.baseURL .. url)
-	local title = htmlElement:selectFirst("a.truyen-title"):text()
+	local title = htmlElement:selectFirst("div.chapter-title"):text()
 	htmlElement = htmlElement:selectFirst("div.chapter-content")
 
 	-- Remove/modify unwanted HTML elements to get a clean webpage.
@@ -165,10 +162,4 @@ return novelData("https://novelnb.com", {
 	imageURL = "",
 
 	hasCloudFlare = true,
-	meta_offset = 0,
-	hot = "/list/hot-novel",
-	latest = "/list/latest-release-novel",
-	completed = "/list/completed-novel",
-	searchListSel = "list.list-truyen.col-xs-12",
-	searchTitleSel = ".img-hover"
 })
