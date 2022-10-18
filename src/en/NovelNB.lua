@@ -17,9 +17,9 @@ local defaults = {
 }
 
 function defaults:getPassage(url)
-	local htmlElement = GETDocument(self.baseURL .. url)
-	local title = htmlElement:selectFirst("div.chapter-title"):text()
-	htmlElement = htmlElement:selectFirst("div.chapter-content")
+	local doc = GETDocument(self.baseURL .. url)
+	local title = doc:selectFirst("div.chapter-title"):text()
+	local htmlElement = doc:selectFirst("div.chapter-content")
 
 	-- Remove/modify unwanted HTML elements to get a clean webpage.
 	htmlElement:removeAttr("style") -- Hopefully only temporary as a hotfix
@@ -30,6 +30,17 @@ function defaults:getPassage(url)
 
 	-- Chapter title inserted before chapter text.
 	htmlElement:child(0):before("<h1>" .. title .. "</h1>");
+
+	-- remove advertisements
+	local toRemove = {}
+	htmlElement:traverse(NodeVisitor(function(v)
+		if v:hasAttr("style") then
+			toRemove[#toRemove+1] = v
+		end
+	end, nil, true))
+	for _,v in pairs(toRemove) do
+		v:remove()
+	end
 
 	return pageOfElem(htmlElement)
 end
