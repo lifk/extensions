@@ -34,7 +34,7 @@ function defaults:getPassage(url)
 	-- remove advertisements
 	local toRemove = {}
 	htmlElement:traverse(NodeVisitor(function(v)
-		if v:hasAttr("style") and v:attr("style"):match("font-size: *0.8em;") then
+		if v:hasAttr("style") and v:attr("style"):match("font-size: *0.8em") then
 			toRemove[#toRemove+1] = v
 		end
 	end, nil, true))
