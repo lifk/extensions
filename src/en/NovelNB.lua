@@ -75,12 +75,12 @@ function defaults:parseNovel(url, loadChapters)
 	local descP = descParent:select("p")
 	if descP:size() > 0 then
 		-- if exist, use it as description
-		desc = table.concat(map(descP, text), "\n")
+		desc = table.concat(map(descP, text), "\n\n")
 	else
 		-- otherwise use the parent text
 		desc = descParent:text()
 	end
-	info:setDescription(desc:gsub("<br>", "\n"))
+	info:setDescription(desc:gsub("<br>", "\n\n"))
 
 	if loadChapters then
 		local i = 0
