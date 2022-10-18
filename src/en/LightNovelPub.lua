@@ -52,14 +52,14 @@ function defaults:parseNovel(url, loadChapters)
 
 	local elem = doc:selectFirst("div.novel-info")
 
-	--info:setAuthors(map(elem:select("div.author a", text)))
-	--info:setGenres(map(elem:selectFirst("div.categories"):select("li a", text)))
-	--info:setStatus( ({
-	--	Ongoing = NovelStatus.PUBLISHING,
-	--	Completed = NovelStatus.COMPLETED
-	--})[elem:selectFirst(".header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
+	info:setAuthors(map(elem:select("div.author a"), text))
+	info:setGenres(map(elem:selectFirst("div.categories"):select("li a"), text))
+	info:setStatus( ({
+		Ongoing = NovelStatus.PUBLISHING,
+		Completed = NovelStatus.COMPLETED
+	})[elem:selectFirst(".header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
 
-	info:setImageURL(doc:selectFirst("div.fixed-img figure img"):attr("src"))
+	info:setImageURL(doc:selectFirst("div.fixed-img"):selectFirst("img"):attr("src"))
 
 	local desc = ""
 	local descParent = doc:selectFirst("div.summary div.content")
@@ -125,8 +125,8 @@ end
 function defaults:parseList(url)
 	return map(GETDocument(url):selectFirst(".novel-list"):select(".cover-wrap"), function(v)
 		local novel = Novel()
+		novel:setImageURL(v:selectFirst("img"):attr("src"))
 		local data = v:selectFirst("a")
-		novel:setImageURL(data:selectFirst("img"):attr("src"))
 		novel:setTitle(data:attr("title"))
 		novel:setLink(self.shrinkURL(data:attr("href")))
 		return novel
