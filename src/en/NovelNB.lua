@@ -64,14 +64,11 @@ function defaults:parseNovel(url, loadChapters)
 		Completed = NovelStatus.COMPLETED
 	})[elem:get(3):selectFirst("span"):text()] )
 
-	info:setImageURL((self.appendURLToInfoImage and self.baseURL or "") .. doc:selectFirst("div.book img"):attr("src"))
-	info:setDescription(table.concat(map(doc:select("div.desc-text p"), text), "\n"))
+	info:setImageURL(doc:selectFirst("div.book img"):attr("src"))
+	info:setDescription(doc:selectFirst("div.desc-text p"):text():gsub("<br>", "\n"))
 
 	if loadChapters then
-		--local id = doc:selectFirst("div[data-novel-id]"):attr("data-novel-id")
 		local i = 0
-		-- doc:selectFirst(".list-chapter"):children(),
-
 		local nextSize = 0
 		local curPage = 1
 		local chapterTable = {}
