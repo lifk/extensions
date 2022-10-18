@@ -51,16 +51,13 @@ function defaults:parseNovel(url, loadChapters)
 	info:setTitle(doc:selectFirst("h1.novel-title"):text())
 
 	local elem = doc:selectFirst(".novel-info"):children()
-	local function meta_links(i)
-		return map(elem:get(i):select("a"), text)
-	end
 
-	info:setAuthors(map(elem:select("div.author a", text)))
-	info:setGenres(map(elem:select("li a", text)))
-	info:setStatus( ({
-		Ongoing = NovelStatus.PUBLISHING,
-		Completed = NovelStatus.COMPLETED
-	})[elem:selectFirst("header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
+	--info:setAuthors(map(elem:select("div.author a", text)))
+	--info:setGenres(map(elem:select("li a", text)))
+	--info:setStatus( ({
+	--	Ongoing = NovelStatus.PUBLISHING,
+	--	Completed = NovelStatus.COMPLETED
+	--})[elem:selectFirst("header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
 
 	info:setImageURL(doc:selectFirst("div.fixed-img figure img"):attr("src"))
 
