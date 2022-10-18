@@ -31,6 +31,16 @@
   ],
   "scripts": [
     {
+      "name": "Novel Team",
+      "fileName": "Novelteam",
+      "imageURL": "https://mixednovel.net/wp-content/themes/madara/images/logo.png",
+      "id": 724098,
+      "lang": "en",
+      "ver": "1.0.0",
+      "libVer": "1.0.0",
+      "md5": ""
+    },
+    {
       "name": "NovelNB",
       "fileName": "NovelNB",
       "imageURL": "https://novelnb.com/assets/css/img/logo.png",
@@ -56,7 +66,7 @@
       "imageURL": "http://github.com/shosetsuorg/extensions/raw/dev/icons/EternalTranslation.png",
       "id": 1787,
       "lang": "en",
-      "ver": "0.1.9",
+      "ver": "0.1.10",
       "libVer": "0.1.9",
       "md5": ""
     }
