@@ -1,4 +1,4 @@
--- {"id":1782,"ver":"0.0.1","libVer":"1.0.0","author":"Xanvial"}
+-- {"id":1782,"ver":"0.0.9","libVer":"1.0.0","author":"Xanvial"}
 local qs = Require("url").querystring
 
 local defaults = {
@@ -189,8 +189,8 @@ local function novelData(baseURL, _self)
 end
 
 return novelData("https://webnovelpub.com", {
-	id = 1781,
-	name = "Light Novel Pubz",
+	id = 1782,
+	name = "Light Novel Pub",
 	imageURL = "https://static.webnovelpub.com/content/img/webnovelpub/logo.png",
 
 	hasCloudFlare = true,
