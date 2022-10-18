@@ -31,7 +31,7 @@ end
 function defaults:getPassage(url)
 	local doc = GETDocument(self.expandURL(url))
 	local title = doc:selectFirst(".chapter-title"):text()
-	local htmlElement = doc:selectFirst(".chapter-container")
+	local htmlElement = doc:selectFirst(".chapter-content")
 
 	-- Remove/modify unwanted HTML elements to get a clean webpage.
 	htmlElement:removeAttr("style") -- Hopefully only temporary as a hotfix
