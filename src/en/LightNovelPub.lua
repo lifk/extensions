@@ -50,14 +50,14 @@ function defaults:parseNovel(url, loadChapters)
 	local info = NovelInfo()
 	info:setTitle(doc:selectFirst("h1.novel-title"):text())
 
-	local elem = doc:selectFirst(".novel-info"):children()
+	local elem = doc:selectFirst("div.novel-info")
 
 	--info:setAuthors(map(elem:select("div.author a", text)))
-	--info:setGenres(map(elem:select("li a", text)))
+	--info:setGenres(map(elem:selectFirst("div.categories"):select("li a", text)))
 	--info:setStatus( ({
 	--	Ongoing = NovelStatus.PUBLISHING,
 	--	Completed = NovelStatus.COMPLETED
-	--})[elem:selectFirst("header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
+	--})[elem:selectFirst(".header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
 
 	info:setImageURL(doc:selectFirst("div.fixed-img figure img"):attr("src"))
 
@@ -86,7 +86,7 @@ function defaults:parseNovel(url, loadChapters)
 			if curPage > 1 then
 				pageUrl = "/page-" .. curPage
 			end
-			local curDocs = GETDocument(self.expandURL(url) .. "/chapters" .. pageUrl):selectFirst("ul.chapter-list")
+			local curDocs = GETDocument(self.expandURL(url) .. "/chapters" .. pageUrl)
 			local nextButton = curDocs:selectFirst(".pagination"):select(".PagedList-skipToNext")
 			if (nextButton ~= nil and nextButton:size() > 0) then
 				curPage = curPage + 1
@@ -94,8 +94,9 @@ function defaults:parseNovel(url, loadChapters)
 			else
 				stopLoop = true
 			end
+			local chList = curDocs:selectFirst("ul.chapter-list")
 			chapterTable = tableConcat(chapterTable, map(
-					curDocs:selectFirst(".chapter-list"):select("li a"),
+					chList:selectFirst(".chapter-list"):select("li a"),
 					function(v)
 						local chap = NovelChapter()
 						chap:setLink(self.shrinkURL(v:attr("href")))
