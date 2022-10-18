@@ -159,7 +159,7 @@ end
 return novelData("https://novelnb.com", {
 	id = 1789,
 	name = "NovelNB",
-	imageURL = "",
+	imageURL = "https://novelnb.com/assets/css/img/logo.png",
 
 	hasCloudFlare = true,
 })
