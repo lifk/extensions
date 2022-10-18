@@ -12,6 +12,13 @@ local defaults = {
 	chapterType = ChapterType.HTML
 }
 
+--- Get string from Element
+--- @param v Element
+--- @return string
+local text = function(v)
+	return v:text()
+end
+
 function defaults:getPassage(url)
 	local doc = GETDocument(self.expandURL(url))
 	local title = doc:selectFirst("div.chapter-title"):text()
@@ -50,7 +57,7 @@ function defaults:parseNovel(url, loadChapters)
 	info:setTitle(title)
 
 	local function meta_links(i)
-		return map(elem:get(i):select("a"), function(v) return v:text() end)
+		return map(elem:get(i):select("a"), text)
 	end
 
 	info:setAuthors(meta_links(0))
@@ -68,7 +75,7 @@ function defaults:parseNovel(url, loadChapters)
 	local descP = descParent:select("p")
 	if descP:size() > 0 then
 		-- if exist, use it as description
-		desc = descP:get(0):text()
+		desc = table.concat(map(descP, text), "\n")
 	else
 		-- otherwise use the parent text
 		desc = descParent:text()
