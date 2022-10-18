@@ -34,7 +34,7 @@ function defaults:getPassage(url)
 	-- remove advertisements
 	local toRemove = {}
 	htmlElement:traverse(NodeVisitor(function(v)
-		if v:hasAttr("style") then
+		if v:hasAttr("style") and v:attr("style") == "font-size: 0.8em; font-style: italic;"  then
 			toRemove[#toRemove+1] = v
 		end
 	end, nil, true))
@@ -103,7 +103,7 @@ function defaults:parseNovel(url, loadChapters)
 					function(v)
 						local chap = NovelChapter()
 						chap:setLink(self.shrinkURL(v:attr("href")))
-						chap:setTitle(v:selectFirst(".chapter-text"):text():gsub(title ..  " - ", ""))
+						chap:setTitle(v:attr("title"):gsub(title ..  " - ", ""))
 						chap:setOrder(i)
 						i = i + 1
 						return chap
