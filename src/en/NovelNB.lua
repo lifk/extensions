@@ -103,7 +103,7 @@ function defaults:parseNovel(url, loadChapters)
 					function(v)
 						local chap = NovelChapter()
 						chap:setLink(self.shrinkURL(v:attr("href")))
-						chap:setTitle(v:attr("title"):gsub(title ..  " - ", ""))
+						chap:setTitle(v:text())
 						chap:setOrder(i)
 						i = i + 1
 						return chap
