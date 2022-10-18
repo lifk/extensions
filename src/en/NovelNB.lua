@@ -1,9 +1,5 @@
--- {"id":1788,"ver":"1.0.4","libVer":"1.0.0","author":"TechnoJo4"}
+-- {"id":1788,"ver":"1.0.0","libVer":"1.0.0","author":"Xanvial"}
 local qs = Require("url").querystring
-
-local text = function(v)
-	return v:text()
-end
 
 local defaults = {
 	baseURL = "",
@@ -31,10 +27,9 @@ function defaults:getPassage(url)
 	-- Chapter title inserted before chapter text.
 	htmlElement:child(0):before("<h1>" .. title .. "</h1>");
 
-	-- remove advertisements
 	local toRemove = {}
 	htmlElement:traverse(NodeVisitor(function(v)
-		-- exclude element with styles (footer messages)
+		-- exclude element with styles (footer messages), TODO: allow to customize this
 		if v:hasAttr("style") and v:attr("style"):match("0.8em") then
 			toRemove[#toRemove+1] = v
 		end
@@ -46,13 +41,6 @@ function defaults:getPassage(url)
 	return pageOfElem(htmlElement)
 end
 
-local function TableConcat(t1,t2)
-	for i=1,#t2 do
-		t1[#t1+1] = t2[i]
-	end
-	return t1
-end
-
 function defaults:parseNovel(url, loadChapters)
 	local doc = GETDocument(self.expandURL(url))
 	local info = NovelInfo()
@@ -62,11 +50,10 @@ function defaults:parseNovel(url, loadChapters)
 	info:setTitle(title)
 
 	local function meta_links(i)
-		return map(elem:get(i):select("a"), text)
+		return map(elem:get(i):select("a"), function(v) return v:text() end)
 	end
 
 	info:setAuthors(meta_links(0))
-	--info:setAlternativeTitles(meta_links(1))
 	info:setGenres( meta_links(1) )
 	info:setStatus( ({
 		Ongoing = NovelStatus.PUBLISHING,
@@ -80,8 +67,10 @@ function defaults:parseNovel(url, loadChapters)
 	-- check if element <p> exist
 	local descP = descParent:select("p")
 	if descP:size() > 0 then
+		-- if exist, use it as description
 		desc = descP:get(0):text()
 	else
+		-- otherwise use the parent text
 		desc = descParent:text()
 	end
 	info:setDescription(desc:gsub("<br>", "\n"))
@@ -91,6 +80,15 @@ function defaults:parseNovel(url, loadChapters)
 		local nextSize = 0
 		local curPage = 1
 		local chapterTable = {}
+
+		local function TableConcat(t1,t2)
+			for i=1,#t2 do
+				t1[#t1+1] = t2[i]
+			end
+			return t1
+		end
+
+		-- loop each chapter list pages
 		repeat
 			local curDocs = GETDocument(qs({ page = curPage }, self.expandURL(url))):selectFirst("div#list-chapter")
 			local pagination = curDocs:select(".pagination")
