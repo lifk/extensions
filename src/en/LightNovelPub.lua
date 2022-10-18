@@ -4,6 +4,7 @@ local qs = Require("url").querystring
 local defaults = {
 	hot = "/stories-17091737/genre-all/order-popular/status-all",
 	latest = "/stories-17091737/genre-all/order-updated/status-all",
+	ranking = "/ranking-30091942",
 
 	hasCloudFlare = false,
 	hasSearch = true,
@@ -135,7 +136,16 @@ end
 
 --- @return Novel[]
 function defaults:search(data)
-	return self.parseList(qs({ q = data[QUERY], page = data[PAGE] }, self.baseURL .. "/search"))
+	local post = RequestDocument(POST(self.expandURL("/lnsearchlive"), nil,
+			RequestBody(qs({ inputContent=data[QUERY] }), MediaType("application/x-www-form-urlencoded"))))
+	return map(post:selectFirst(".novel-list"):select(".cover-wrap"), function(v)
+		local novel = Novel()
+		novel:setImageURL(v:selectFirst("img"):attr("src"))
+		local data = v:selectFirst("a")
+		novel:setTitle(data:attr("title"))
+		novel:setLink(self.shrinkURL(data:attr("href")))
+		return novel
+	end)
 end
 
 --- @return Novel[]
@@ -149,8 +159,15 @@ function defaults:latestList(data)
 end
 
 --- @return Novel[]
-function defaults:completedList(data)
-	return self.parseList(self.baseURL .. self.completed .. "/p-"  .. data[PAGE])
+function defaults:rankingList(data)
+	return map(GETDocument(self.baseURL .. self.ranking):selectFirst(".rank-novels"):select(".novel-item"), function(v)
+		local novel = Novel()
+		novel:setImageURL(v:selectFirst("img"):attr("src"))
+		local data = v:selectFirst("h2.title a")
+		novel:setTitle(data:attr("title"))
+		novel:setLink(self.shrinkURL(data:attr("href")))
+		return novel
+	end)
 end
 
 ---@param baseURL string
@@ -166,13 +183,14 @@ local function novelData(baseURL, _self)
 	_self["listings"] = {
 		Listing("Hot", true, _self.hotList),
 		Listing("Latest", true, _self.latestList),
+		Listing("Ranking", false, _self.rankingList),
 	}
 	return _self
 end
 
 return novelData("https://webnovelpub.com", {
 	id = 1781,
-	name = "Light Novel Pub",
+	name = "Light Novel Pubz",
 	imageURL = "https://static.webnovelpub.com/content/img/webnovelpub/logo.png",
 
 	hasCloudFlare = true,
