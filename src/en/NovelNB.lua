@@ -19,19 +19,6 @@ local defaults = {
 	chapterType = ChapterType.HTML
 }
 
-function defaults:search(data)
-	-- search gives covers but they're in some weird aspect ratio
-	local doc = GETDocument(qs({ q = data[QUERY], page = data[PAGE] }, self.baseURL .. "/search"))
-
-	return map(doc:selectFirst(".list-cat2"):select("div.item a"), function(v)
-		local novel = Novel()
-		novel:setImageURL(v:selectFirst("img"):attr("src"))
-		novel:setTitle(v:attr("title"))
-		novel:setLink(v:attr("href"):gsub(self.baseURL, ""))
-		return novel
-	end)
-end
-
 function defaults:getPassage(url)
 	local htmlElement = GETDocument(self.baseURL .. url)
 	local title = htmlElement:selectFirst("a.truyen-title"):text()
@@ -123,16 +110,39 @@ function defaults:expandURL(url)
 	return self.baseURL .. url
 end
 
--- TODO
----@param url ArrayList
-function defaults:getNovelData(url)
-	return map(GETDocument(url):selectFirst(".list-cat2"):select("div.item a"), function(v)
+function defaults:parseList(url)
+	return map(GETDocument(url):selectFirst(".list-cat2"):select("div.item"), function(v)
 		local novel = Novel()
-		novel:setImageURL(v:selectFirst(".img-responsive"):attr("src"))
-		novel:setTitle(v:attr("title"))
-		novel:setLink(v:attr("href"):gsub(baseURL, ""))
+		local data = v:selectFirst("a")
+		novel:setImageURL(data:selectFirst("img"):attr("src"))
+		novel:setTitle(data:selectFirst("div"):selectFirst("h3"):text())
+		novel:setLink(self.shrinkURL(data:attr("href")))
 		return novel
 	end)
+end
+
+--https://novelnb.com/search?q=sample&page=1
+--- @return Novel[]
+function defaults:search(data)
+	return self.parseList(qs({ q = data[QUERY], page = data[PAGE] }, self.baseURL .. "/search"))
+end
+
+--https://novelnb.com/list/hot-novel?page=1
+--- @return Novel[]
+function defaults:hotList(data)
+	return self.parseList(self.baseURL .. self.hot .. "?page="  .. data[PAGE])
+end
+
+--https://novelnb.com/list/latest-release-novel?page=1
+--- @return Novel[]
+function defaults:latestList(data)
+	return self.parseList(self.baseURL .. self.latest .. "?page="  .. data[PAGE])
+end
+
+--https://novelnb.com/list/completed-novel?page=1
+--- @return Novel[]
+function defaults:completedList(data)
+	return self.parseList(self.baseURL .. self.completed .. "?page="  .. data[PAGE])
 end
 
 local function novelData(baseURL, _self)
@@ -145,24 +155,9 @@ local function novelData(baseURL, _self)
 		_self["base"] = baseURL
 	end
 	_self["listings"] = {
-		Listing("Hot", false, function()
-			return map(GETDocument(_self.base .. _self.hot):selectFirst(".list-cat2"):select("div.item a"), function(v)
-				local novel = Novel()
-				novel:setImageURL(v:selectFirst(".img-responsive"):attr("src"))
-				novel:setTitle(v:selectFirst("div h3"):text())
-				novel:setLink(v:attr("href"):gsub(baseURL, ""))
-				return novel
-			end)
-		end),
-		Listing("Latest", false, function()
-			return map(GETDocument(_self.base .. _self.latest):selectFirst(".list-cat2"):select("div.item a"), function(v)
-				local novel = Novel()
-				novel:setImageURL(v:selectFirst(".img-responsive"):attr("src"))
-				novel:setTitle(v:attr("title"))
-				novel:setLink(v:attr("href"):gsub(baseURL, ""))
-				return novel
-			end)
-		end)
+		Listing("Hot", true, _self.hotList),
+		Listing("Latest", true, _self.latestList),
+		Listing("Completed", true, _self.completedList),
 	}
 	return _self
 end
@@ -176,6 +171,7 @@ return novelData("https://novelnb.com", {
 	meta_offset = 0,
 	hot = "/list/hot-novel",
 	latest = "/list/latest-release-novel",
+	completed = "/list/completed-novel",
 	searchListSel = "list.list-truyen.col-xs-12",
 	searchTitleSel = ".img-hover"
 })
