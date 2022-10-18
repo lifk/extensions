@@ -6,7 +6,7 @@ local text = function(v)
 end
 
 local defaults = {
-	meta_offset = 1,
+	baseURL = "",
 	hot = "/list/hot-novel",
 	latest = "/list/latest-release-novel",
 	completed = "/list/completed-novel",
@@ -17,7 +17,7 @@ local defaults = {
 }
 
 function defaults:getPassage(url)
-	local doc = GETDocument(self.baseURL .. url)
+	local doc = GETDocument(self.expandURL(url))
 	local title = doc:selectFirst("div.chapter-title"):text()
 	local htmlElement = doc:selectFirst("div.chapter-content")
 
@@ -53,7 +53,7 @@ local function TableConcat(t1,t2)
 end
 
 function defaults:parseNovel(url, loadChapters)
-	local doc = GETDocument(self.baseURL .. url)
+	local doc = GETDocument(self.expandURL(url))
 	local info = NovelInfo()
 
 	local elem = doc:selectFirst(".info"):children()
@@ -73,7 +73,17 @@ function defaults:parseNovel(url, loadChapters)
 	})[elem:get(3):selectFirst("span"):text()] )
 
 	info:setImageURL(doc:selectFirst("div.book img"):attr("src"))
-	info:setDescription(doc:selectFirst("div.desc-text p"):text():gsub("<br>", "\n"))
+
+	local desc = ""
+	local descParent = doc:selectFirst("div.desc-text")
+	-- check if element <p> exist
+	local descP = descParent:select("p")
+	if descP:size() > 0 then
+		desc = descP:get(0):text()
+	else
+		desc = descParent:text()
+	end
+	info:setDescription(desc:gsub("<br>", "\n"))
 
 	if loadChapters then
 		local i = 0
@@ -81,7 +91,7 @@ function defaults:parseNovel(url, loadChapters)
 		local curPage = 1
 		local chapterTable = {}
 		repeat
-			local curDocs = GETDocument(qs({ page = curPage }, self.baseURL .. url)):selectFirst("div#list-chapter")
+			local curDocs = GETDocument(qs({ page = curPage }, self.expandURL(url))):selectFirst("div#list-chapter")
 			local pagination = curDocs:select(".pagination")
 			if (pagination ~= nil and pagination:size() > 0) then
 				local paginationList = pagination:get(0):select("li") --
@@ -92,7 +102,7 @@ function defaults:parseNovel(url, loadChapters)
 					curDocs:selectFirst(".list-chapter"):select("li a"),
 					function(v)
 						local chap = NovelChapter()
-						chap:setLink(v:attr("href"):gsub(self.baseURL, ""))
+						chap:setLink(self.shrinkURL(v:attr("href")))
 						chap:setTitle(v:selectFirst(".chapter-text"):text():gsub(title ..  " - ", ""))
 						chap:setOrder(i)
 						i = i + 1
@@ -120,7 +130,7 @@ function defaults:parseList(url)
 		local novel = Novel()
 		local data = v:selectFirst("a")
 		novel:setImageURL(data:selectFirst("img"):attr("src"))
-		novel:setTitle(data:selectFirst("div"):selectFirst("h3"):text())
+		novel:setTitle(data:selectFirst("div.title"):selectFirst("h3"):text())
 		novel:setLink(self.shrinkURL(data:attr("href")))
 		return novel
 	end)
@@ -150,6 +160,7 @@ function defaults:completedList(data)
 	return self.parseList(self.baseURL .. self.completed .. "?page="  .. data[PAGE])
 end
 
+---@param baseURL string
 local function novelData(baseURL, _self)
 	_self = setmetatable(_self or {}, { __index = function(_, k)
 		local d = defaults[k]
@@ -171,6 +182,4 @@ return novelData("https://novelnb.com", {
 	id = 1789,
 	name = "NovelNB",
 	imageURL = "https://novelnb.com/assets/css/img/logo.png",
-
-	hasCloudFlare = true,
 })
