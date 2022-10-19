@@ -102,6 +102,7 @@ function defaults:parseNovel(url, loadChapters)
 						local chap = NovelChapter()
 						chap:setLink(self.shrinkURL(v:attr("href")))
 						chap:setTitle(v:attr("title"))
+						chap:setRelease(v:selectFirst("time"):attr("datetime"))
 						chap:setOrder(i)
 						i = i + 1
 						return chap
@@ -136,9 +137,18 @@ end
 
 --- @return Novel[]
 function defaults:search(data)
-	local post = RequestDocument(POST(self.expandURL("/lnsearchlive"), nil,
-			RequestBody(qs({ inputContent=data[QUERY] }), MediaType("application/x-www-form-urlencoded"))))
-	return map(post:selectFirst(".novel-list"):select(".cover-wrap"), function(v)
+	local headers = HeadersBuilder()
+			:add("authority", "www.webnovelpub.com")
+			:add("origin", "https://www.webnovelpub.com")
+			:add("referer", "https://www.webnovelpub.com/search")
+			:add("x-requested-with", "XMLHttpRequest")
+			:build()
+	local postData = POST(self.baseURL .. "/lnsearchlive", headers,
+			FormBodyBuilder():add("inputContent", data[QUERY])):build()
+	local doc = RequestDocument(postData)
+	--local post = RequestDocument(POST(self.expandURL("/lnsearchlive"), nil,
+	--		RequestBody(qs({ inputContent=data[QUERY] }), MediaType("application/x-www-form-urlencoded"))))
+	return map(doc:selectFirst(".novel-list"):select(".cover-wrap"), function(v)
 		local novel = Novel()
 		novel:setImageURL(v:selectFirst("img"):attr("src"))
 		local data = v:selectFirst("a")
