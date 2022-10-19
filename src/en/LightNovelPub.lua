@@ -60,7 +60,7 @@ function defaults:parseNovel(url, loadChapters)
 		Completed = NovelStatus.COMPLETED
 	})[elem:selectFirst(".header-stats"):select("span"):get(3):selectFirst("strong"):text()] )
 
-	info:setImageURL(doc:selectFirst("div.fixed-img"):selectFirst("img"):attr("src"))
+	info:setImageURL(doc:selectFirst("div.fixed-img"):selectFirst("img"):attr("data-src"))
 
 	local desc = ""
 	local descParent = doc:selectFirst("div.summary div.content")
@@ -126,7 +126,7 @@ end
 function defaults:parseList(url)
 	return map(GETDocument(url):selectFirst(".novel-list"):select(".cover-wrap"), function(v)
 		local novel = Novel()
-		novel:setImageURL(v:selectFirst("img"):attr("src"))
+		novel:setImageURL(v:selectFirst("img"):attr("data-src"))
 		local data = v:selectFirst("a")
 		novel:setTitle(data:attr("title"))
 		novel:setLink(self.shrinkURL(data:attr("href")))
