@@ -1,5 +1,6 @@
 -- {"id":1782,"ver":"0.0.9","libVer":"1.0.0","author":"Xanvial"}
 local qs = Require("url").querystring
+local postJSON = Require("dkjson").POST
 
 local defaults = {
 	hot = "/stories-17091737/genre-all/order-popular/status-all",
@@ -143,12 +144,12 @@ function defaults:search(data)
 			:add("referer", "https://www.webnovelpub.com/search")
 			:add("x-requested-with", "XMLHttpRequest")
 			:build()
-	local postData = POST(self.baseURL .. "/lnsearchlive", headers,
+	local postData = postJSON(self.baseURL .. "/lnsearchlive", headers,
 			FormBodyBuilder():add("inputContent", data[QUERY])):build()
-	local doc = RequestDocument(postData)
+	--local doc = RequestDocument(postData)
 	--local post = RequestDocument(POST(self.expandURL("/lnsearchlive"), nil,
 	--		RequestBody(qs({ inputContent=data[QUERY] }), MediaType("application/x-www-form-urlencoded"))))
-	return map(doc:selectFirst(".novel-list"):select(".cover-wrap"), function(v)
+	return map(postData:selectFirst(".novel-list"):select(".cover-wrap"), function(v)
 		local novel = Novel()
 		novel:setImageURL(v:selectFirst("img"):attr("src"))
 		local data = v:selectFirst("a")
@@ -192,8 +193,8 @@ local function novelData(baseURL, _self)
 	end
 	_self["listings"] = {
 		Listing("Hot", true, _self.hotList),
-		Listing("Latest", true, _self.latestList),
-		Listing("Ranking", false, _self.rankingList),
+		--Listing("Latest", true, _self.latestList),
+		--Listing("Ranking", false, _self.rankingList),
 	}
 	return _self
 end
@@ -204,5 +205,5 @@ return novelData("https://webnovelpub.com", {
 	imageURL = "https://static.webnovelpub.com/content/img/webnovelpub/logo.png",
 
 	hasCloudFlare = true,
-	hasSearch = false, -- todo
+	hasSearch = true, -- todo
 })
