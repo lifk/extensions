@@ -1,34 +1,4 @@
 {
-  "libraries": [
-    {
-      "name": "247truyen",
-      "ver": "1.1.2"
-    },
-    {
-      "name": "CommonCSS",
-      "ver": "1.0.1"
-    },
-    {
-      "name": "dkjson",
-      "ver": "1.0.1"
-    },
-    {
-      "name": "NovelFull",
-      "ver": "2.0.6"
-    },
-    {
-      "name": "url",
-      "ver": "1.0.0"
-    },
-    {
-      "name": "WWVolare",
-      "ver": "1.2.1"
-    },
-    {
-      "name": "Madara",
-      "ver": "2.3.3"
-    }
-  ],
   "scripts": [
     {
       "name": "Light Novel Pub",
@@ -36,7 +6,7 @@
       "imageURL": "",
       "id": 1782,
       "lang": "en",
-      "ver": "0.1.1",
+      "ver": "0.1.2",
       "libVer": "1.0.0",
       "md5": ""
     }

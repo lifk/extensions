@@ -1,6 +1,6 @@
 -- {"id":1782,"ver":"0.0.9","libVer":"1.0.0","author":"Xanvial"}
-local qs = Require("url").querystring
-local postJSON = Require("dkjson").POST
+
+--local postJSON = Require("dkjson").POST
 
 local defaults = {
 	hot = "/stories-17091737/genre-all/order-popular/status-all",
@@ -136,27 +136,20 @@ function defaults:parseList(url)
 	end)
 end
 
+--- TODO
 --- @return Novel[]
 function defaults:search(data)
-	local headers = HeadersBuilder()
-			:add("authority", "www.webnovelpub.com")
-			:add("origin", "https://www.webnovelpub.com")
-			:add("referer", "https://www.webnovelpub.com/search")
-			:add("x-requested-with", "XMLHttpRequest")
-			:build()
-	local postData = postJSON(self.baseURL .. "/lnsearchlive", headers,
-			FormBodyBuilder():add("inputContent", data[QUERY])):build()
-	--local doc = RequestDocument(postData)
-	--local post = RequestDocument(POST(self.expandURL("/lnsearchlive"), nil,
-	--		RequestBody(qs({ inputContent=data[QUERY] }), MediaType("application/x-www-form-urlencoded"))))
-	return map(postData:selectFirst(".novel-list"):select(".cover-wrap"), function(v)
-		local novel = Novel()
-		novel:setImageURL(v:selectFirst("img"):attr("src"))
-		local data = v:selectFirst("a")
-		novel:setTitle(data:attr("title"))
-		novel:setLink(self.shrinkURL(data:attr("href")))
-		return novel
-	end)
+	--local postData = postJSON(self.baseURL .. "/lnsearchlive", {inputContent = data[QUERY]})
+	--local doc = Document(postData)
+	--local novList = doc:selectFirst(".novel-list")
+	--return map(novList:select(".cover-wrap"), function(v)
+	--	local novel = Novel()
+	--	novel:setImageURL(v:selectFirst("img"):attr("src"))
+	--	local data = v:selectFirst("a")
+	--	novel:setTitle(data:attr("title"))
+	--	novel:setLink(self.shrinkURL(data:attr("href")))
+	--	return novel
+	--end)
 end
 
 --- @return Novel[]
@@ -193,8 +186,8 @@ local function novelData(baseURL, _self)
 	end
 	_self["listings"] = {
 		Listing("Hot", true, _self.hotList),
-		--Listing("Latest", true, _self.latestList),
-		--Listing("Ranking", false, _self.rankingList),
+		Listing("Latest", true, _self.latestList),
+		Listing("Ranking", false, _self.rankingList),
 	}
 	return _self
 end
@@ -205,5 +198,5 @@ return novelData("https://webnovelpub.com", {
 	imageURL = "https://static.webnovelpub.com/content/img/webnovelpub/logo.png",
 
 	hasCloudFlare = true,
-	hasSearch = true, -- todo
+	hasSearch = false, -- todo
 })
