@@ -155,12 +155,12 @@ end
 
 --- @return Novel[]
 function defaults:hotList(data)
-	return self.parseList(self.baseURL .. self.hot .. "/p-"  .. data[PAGE])
+	return self.parseList(self.baseURL .. self.hot .. data[PAGE])
 end
 
 --- @return Novel[]
 function defaults:latestList(data)
-	return self.parseList(self.baseURL .. self.latest .. "/p-"  .. data[PAGE])
+	return self.parseList(self.baseURL .. self.latest  .. data[PAGE])
 end
 
 --- @return Novel[]
