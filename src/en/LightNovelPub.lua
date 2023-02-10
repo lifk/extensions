@@ -90,6 +90,7 @@ function defaults:parseNovel(url, loadChapters)
 			end
 			local curDocs = GETDocument(self.expandURL(url) .. "/chapters" .. pageUrl)
 			local nextButton = curDocs:selectFirst(".pagination"):select(".PagedList-skipToNext")
+			print(nextButton)
 			if (nextButton ~= nil and nextButton:size() > 0) then
 				curPage = curPage + 1
 				stopLoop = false
