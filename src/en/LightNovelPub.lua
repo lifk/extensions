@@ -192,10 +192,10 @@ local function novelData(baseURL, _self)
 	return _self
 end
 
-return novelData("https://lightnovelpub.com", {
+return novelData("https://webnovelpub.com", {
 	id = 1782,
 	name = "Light Novel Pub",
-	imageURL = "https://static.lightnovelpub.com/content/img/webnovelpub/logo.png",
+	imageURL = "https://static.webnovelpub.com/content/img/webnovelpub/logo.png",
 
 	hasCloudFlare = true,
 	hasSearch = false, -- todo
