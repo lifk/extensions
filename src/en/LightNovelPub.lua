@@ -3,8 +3,8 @@
 --local postJSON = Require("dkjson").POST
 
 local defaults = {
-	hot = "/stories-17091737/genre-all/order-popular/status-all/p-1",
-	latest = "/stories-17091737/genre-all/order-new/status-all/p-1",
+	hot = "/stories-17091737/genre-all/order-popular/status-all",
+	latest = "/stories-17091737/genre-all/order-new/status-all",
 	ranking = "/ranking-29121354",
 
 	hasCloudFlare = false,
